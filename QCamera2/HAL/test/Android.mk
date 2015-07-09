@@ -28,10 +28,6 @@ LOCAL_CFLAGS += -DUSE_JB_MR1
 
 endif
 
-ifneq ($(call is-platform-sdk-version-at-least,20),true)
-LOCAL_CFLAGS += -DUSE_KK_CODE
-endif
-
 LOCAL_C_INCLUDES += \
     frameworks/base/include/ui \
     frameworks/base/include/surfaceflinger \
@@ -46,11 +42,7 @@ LOCAL_C_INCLUDES += \
 LOCAL_MODULE:= camera_test
 LOCAL_MODULE_TAGS:= tests
 
-LOCAL_CFLAGS += -Wall -Wextra -Werror -Wno-unused-parameter
-ifeq ($(call is-platform-sdk-version-at-least,20),true)
-LOCAL_CFLAGS += -Wno-error=deprecated-declarations -Wno-error=deprecated
-endif
-LOCAL_CFLAGS += -O0
+LOCAL_CFLAGS += -Wall -fno-short-enums -O0
 
 include $(BUILD_EXECUTABLE)
 

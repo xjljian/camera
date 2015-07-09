@@ -61,4 +61,5 @@ include $(BUILD_SHARED_LIBRARY)
 # -------- for firmware ---------- #
 LOCAL_PATH:= $(LOCAL_DIR_PATH)
 include $(PPROC_MODULE_PATH)/cpp/firmware/Android.mk
-
+LOCAL_PATH:= $(LOCAL_DIR_PATH)
+include $(call all-subdir-makefiles)

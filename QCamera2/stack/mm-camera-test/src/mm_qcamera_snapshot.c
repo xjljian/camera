@@ -37,7 +37,7 @@ static void jpeg_encode_cb(jpeg_job_status_t status,
                            mm_jpeg_output_t *p_buf,
                            void *userData)
 {
-    uint32_t i = 0;
+    int i = 0;
     mm_camera_test_obj_t *pme = NULL;
     CDBG("%s: BEGIN\n", __func__);
 
@@ -178,7 +178,7 @@ int createEncodingSession(mm_camera_test_obj_t *test_obj,
 static void mm_app_snapshot_metadata_notify_cb(mm_camera_super_buf_t *bufs,
   void *user_data)
 {
-  uint32_t i = 0;
+  int i = 0;
   mm_camera_channel_t *channel = NULL;
   mm_camera_stream_t *p_stream = NULL;
   mm_camera_test_obj_t *pme = (mm_camera_test_obj_t *)user_data;
@@ -193,10 +193,6 @@ static void mm_app_snapshot_metadata_notify_cb(mm_camera_super_buf_t *bufs,
       break;
     }
   }
-  if (NULL == channel) {
-      CDBG_ERROR("%s: Wrong channel id", __func__);
-      return;
-  }
   /* find preview stream */
   for (i = 0; i < channel->num_streams; i++) {
     if (channel->streams[i].s_config.stream_info->stream_type == CAM_STREAM_TYPE_METADATA) {
@@ -204,11 +200,6 @@ static void mm_app_snapshot_metadata_notify_cb(mm_camera_super_buf_t *bufs,
       break;
     }
   }
-  if (NULL == p_stream) {
-      CDBG_ERROR("%s: Wrong preview stream", __func__);
-      return;
-  }
-
   /* find preview frame */
   for (i = 0; i < bufs->num_bufs; i++) {
     if (bufs->bufs[i]->stream_id == p_stream->s_id) {
@@ -247,9 +238,6 @@ static void mm_app_snapshot_metadata_notify_cb(mm_camera_super_buf_t *bufs,
     if (focus_data->focus_state == CAM_AF_FOCUSED) {
       CDBG_ERROR("%s: AutoFocus Done Call Back Received\n",__func__);
       mm_camera_app_done();
-    } else if (focus_data->focus_state == CAM_AF_NOT_FOCUSED) {
-      CDBG_ERROR("%s: AutoFocus failed\n",__func__);
-      mm_camera_app_done();
     }
   }
 
@@ -267,7 +255,7 @@ static void mm_app_snapshot_notify_cb_raw(mm_camera_super_buf_t *bufs,
 {
 
     int rc;
-    uint32_t i = 0;
+    int i = 0;
     mm_camera_test_obj_t *pme = (mm_camera_test_obj_t *)user_data;
     mm_camera_channel_t *channel = NULL;
     mm_camera_stream_t *m_stream = NULL;
@@ -335,7 +323,7 @@ static void mm_app_snapshot_notify_cb(mm_camera_super_buf_t *bufs,
 {
 
     int rc = 0;
-    uint32_t i = 0;
+    int i = 0;
     mm_camera_test_obj_t *pme = (mm_camera_test_obj_t *)user_data;
     mm_camera_channel_t *channel = NULL;
     mm_camera_stream_t *p_stream = NULL;
@@ -670,7 +658,7 @@ int mm_app_take_picture(mm_camera_test_obj_t *test_obj, uint8_t is_burst_mode)
 {
     CDBG_HIGH("\nEnter %s!!\n",__func__);
     int rc = MM_CAMERA_OK;
-    uint8_t num_snapshot = 1;
+    int num_snapshot = 1;
     int num_rcvd_snapshot = 0;
 
     if (is_burst_mode)

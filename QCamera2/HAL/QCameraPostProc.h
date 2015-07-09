@@ -126,7 +126,7 @@ public:
     void setMultipleStages(bool stages) { mMultipleStages = stages; };
     inline bool getJpegMemOpt() {return mJpegMemOpt;}
     inline void setJpegMemOpt(bool val) {mJpegMemOpt = val;}
-    QCameraStream* getReprocStream() {return m_reprocStream;}
+
 private:
     int32_t sendDataNotify(int32_t msg_type,
                            camera_memory_t *data,
@@ -176,13 +176,14 @@ private:
     QCamera2HardwareInterface *m_parent;
     jpeg_encode_callback_t     mJpegCB;
     void *                     mJpegUserData;
+    mm_jpeg_ops_t              mJpegHandle;
+    uint32_t                   mJpegClientHandle;
     uint32_t                   mJpegSessionId;
 
     void *                     m_pJpegOutputMem[MM_JPEG_MAX_BUF];
     QCameraExif *              m_pJpegExifObj;
-    uint32_t                   m_bThumbnailNeeded;
+    int8_t                     m_bThumbnailNeeded;
     QCameraReprocessChannel *  m_pReprocChannel;
-    QCameraReprocessChannel *  m_pDualReprocChannel;
 
     int8_t                     m_bInited; // if postproc is inited
 
@@ -202,11 +203,8 @@ private:
     uint8_t mNewJpegSessionNeeded;
     bool mMultipleStages;               // multiple stages are present
     uint32_t   m_JpegOutputMemCount;
-    QCameraStream *m_reprocStream;
 
 public:
-    mm_jpeg_ops_t   mJpegHandle;
-    uint32_t        mJpegClientHandle;
     cam_dimension_t m_dst_dim;
     cam_dimension_t m_src_dim;
 };

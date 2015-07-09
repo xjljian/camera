@@ -63,7 +63,7 @@ LOCAL_MODULE           := libmmcamera2_pproc_modules
 
 LOCAL_SHARED_LIBRARIES := liblog libcutils libmmcamera2_cpp_module \
  liboemcamera libdl libmmcamera2_c2d_module libmmcamera2_imglib_modules \
- libmmcamera2_wnr_module libmmcamera2_vpe_module
+ libmmcamera2_wnr_module libmmcamera2_vpe_module 
 LOCAL_MODULE_TAGS      := optional eng
 LOCAL_ADDITIONAL_DEPENDENCIES  := $(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ/usr
 LOCAL_MODULE_OWNER := qcom

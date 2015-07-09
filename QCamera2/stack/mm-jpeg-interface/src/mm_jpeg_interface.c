@@ -1,4 +1,4 @@
-/* Copyright (c) 2012-2014, The Linux Foundation. All rights reserved.
+/* Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -27,7 +27,6 @@
  *
  */
 
-#include <stdlib.h>
 #include <pthread.h>
 #include <errno.h>
 #include <sys/ioctl.h>
@@ -277,62 +276,6 @@ static int32_t mm_jpeg_intf_close(uint32_t client_hdl)
   return rc;
 }
 
-/** mm_jpeg_intf_realloc_work_buffer:
- *
- *  Arguments:
- *    @client_hdl: client handle
- *    @alloc: alloc/free
- *
- *  Return:
- *       0 success, failure otherwise
- *
- *  Description:
- *       allocates or frees the work buffer
- *       this is to save mem for low mem targets
- *       during video recording use case
- *
- **/
-static int32_t mm_jpeg_intf_realloc_work_buffer(uint32_t client_hdl,
-    uint32_t alloc)
-{
-  int32_t rc = 0;
-  size_t i = 0;
-
-  CDBG_HIGH("%s:%d] alloc=%d", __func__, __LINE__, alloc);
-
-  if (!alloc) {
-    for (i = 0; i < g_jpeg_obj->work_buf_cnt; i++) {
-      /*Release the ION buffer*/
-      rc = buffer_deallocate(&g_jpeg_obj->ionBuffer[i]);
-      if (0 != rc) {
-        CDBG_ERROR("%s:%d] Error releasing ION buffer", __func__, __LINE__);
-      }
-    }
-    g_jpeg_obj->work_buf_cnt = 0;
-  } else {
-    size_t initial_workbufs_cnt = 1;
-    uint32_t work_buf_size;
-    work_buf_size = CEILING64(g_jpeg_obj->max_pic_w) *
-      CEILING64(g_jpeg_obj->max_pic_h) * 3U / 2U;
-    for (i = 0; i < initial_workbufs_cnt; i++) {
-      g_jpeg_obj->ionBuffer[i].size = CEILING32(work_buf_size);
-      CDBG_HIGH("Max picture size %d x %d, WorkBufSize = %zu",
-          g_jpeg_obj->max_pic_w, g_jpeg_obj->max_pic_h, g_jpeg_obj->ionBuffer[i].size);
-
-      g_jpeg_obj->ionBuffer[i].addr = (uint8_t *)buffer_allocate(&g_jpeg_obj->ionBuffer[i], 1);
-      if (NULL == g_jpeg_obj->ionBuffer[i].addr) {
-        while (i--) {
-          buffer_deallocate(&g_jpeg_obj->ionBuffer[i]);
-        }
-        CDBG_ERROR("%s:%d] Ion allocation failed",__func__, __LINE__);
-        return -1;
-      }
-    }
-    g_jpeg_obj->work_buf_cnt = (uint32_t) i;
-  }
-  return rc;
-}
-
 /** jpeg_open:
  *
  *  Arguments:
@@ -362,7 +305,7 @@ uint32_t jpeg_open(mm_jpeg_ops_t *ops, mm_dimension picture_size)
                       0x10 for mm-camera-interface
                       0x100 for mm-jpeg-interface  */
   property_get("persist.camera.hal.debug.mask", prop, "268435463"); // 0x10000007=268435463
-  temp = (uint32_t)atoi(prop);
+  temp = atoi(prop);
   log_level = ((temp >> 28) & 0xF);
   debug_mask = (temp & HAL_DEBUG_MASK_MM_JPEG_INTERFACE);
   if (debug_mask > 0)
@@ -412,7 +355,6 @@ uint32_t jpeg_open(mm_jpeg_ops_t *ops, mm_dimension picture_size)
       ops->create_session = mm_jpeg_intf_create_session;
       ops->destroy_session = mm_jpeg_intf_destroy_session;
       ops->close = mm_jpeg_intf_close;
-      ops->realloc_work_buffer = mm_jpeg_intf_realloc_work_buffer;
     }
   } else {
     /* failed new client */

@@ -69,6 +69,12 @@ LOCAL_C_INCLUDES += $(LOCAL_PATH)/mct/stream/
 LOCAL_C_INCLUDES += $(LOCAL_PATH)/../server-imaging/
 LOCAL_C_INCLUDES += $(LOCAL_PATH)/../server-tuning/tuning
 
+LOCAL_C_INCLUDES += \
+    $(TARGET_OUT_HEADERS)/mm-camera \
+    $(TARGET_OUT_HEADERS)/mm-camera/common \
+    $(TARGET_OUT_HEADERS)/mm-still \
+    $(TARGET_OUT_HEADERS)/mm-still/jpeg \
+
 LOCAL_C_INCLUDES += $(LOCAL_PATH)/modules/includes/
 #LOCAL_C_INCLUDES += $(LOCAL_PATH)/modules/sensors/
 #LOCAL_C_INCLUDES += $(LOCAL_PATH)/modules/sensors/includes/
@@ -169,7 +175,7 @@ LOCAL_SRC_FILES += $(shell find $(LOCAL_SRC_DIR) -name '*.c' | sed s:^$(LOCAL_PA
 #LOCAL_SRC_DIR := $(LOCAL_PATH)/modules/isp/
 #LOCAL_SRC_FILES += $(shell find $(LOCAL_SRC_DIR) -name '*.c' | sed s:^$(LOCAL_PATH)::g )
 
-LOCAL_SHARED_LIBRARIES:= libdl libcutils  liblog
+LOCAL_SHARED_LIBRARIES:= libdl libcutils liblog libmmjpeg_interface
 
 LOCAL_MODULE:=liboemcamera
 LOCAL_MODULE_TAGS := optional
