@@ -682,15 +682,18 @@ LOCAL_PROPRIETARY_MODULE := true
 
 include $(BUILD_SHARED_LIBRARY)
 #************* libcameraplugin End************#
-
+LOCAL_PATH:= $(LOCAL_DIR_PATH)
 include $(LOCAL_PATH)/chromatix/$(CHROMATIX_VERSION)/libchromatix/Android.mk
-include $(call all-subdir-makefiles)
+#LOCAL_PATH:= $(call my-dir)
+#include $(call all-subdir-makefiles)
 
 LOCAL_PATH:= $(LOCAL_DIR_PATH)
 include $(LOCAL_PATH)/hardware/sensor_libs/Android.mk
-include $(call all-subdir-makefiles)
+#LOCAL_PATH:= $(call my-dir)
+#include $(call all-subdir-makefiles)
 
 LOCAL_PATH:= $(LOCAL_DIR_PATH)
 include $(LOCAL_PATH)/unit_test/Android.mk
-include $(call all-subdir-makefiles)
+#LOCAL_PATH:= $(call my-dir)
+#include $(call all-subdir-makefiles)
 
