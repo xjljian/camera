@@ -1,7 +1,8 @@
 ifneq ($(strip $(USE_CAMERA_STUB)),true)
 COMPILE_CAMERA := true
 endif #!USE_CAMERA_STUB
-
+#$(shell mkdir -p $(OUT)/obj/SHARED_LIBRARIES/libmmjpeg_intermediates)
+#$(shell touch $(OUT)/obj/SHARED_LIBRARIES/libmmjpeg_intermediates/export_includes)
 #default BUILD_CAM_FD to 0 (off)
 BUILD_CAM_FD := 0
 
@@ -12,7 +13,7 @@ BUILD_SERVER_BOARD_PLATFORM_LIST := msm7627a
 #BUILD_SERVER_BOARD_PLATFORM_LIST += msm7630_fusion
 BUILD_SERVER_BOARD_PLATFORM_LIST += msm8660
 #BUILD_SERVER_BOARD_PLATFORM_LIST += msm8960
-#BUILD_SERVER_BOARD_PLATFORM_LIST += msm8974
+BUILD_SERVER_BOARD_PLATFORM_LIST += msm8974
 #BUILD_SERVER_BOARD_PLATFORM_LIST += msm8226
 #BUILD_SERVER_BOARD_PLATFORM_LIST += msm8610
 ifeq ($(call is-board-platform-in-list,$(BUILD_SERVER_BOARD_PLATFORM_LIST)),true)
